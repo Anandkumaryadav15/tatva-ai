@@ -6,26 +6,37 @@
   <title>Tatva AI · Every AI model. One key. Zero markup.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Cinzel:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #ffffff;
-      --bg-alt: #0a0a0a;
-      --card-dark: #111111;
-      --border-dark: #222222;
-      --hairline: #e5e5e5;
-      --hairline-subtle: #f0f0f0;
-      --ink: #0a0a0a;
-      --ink-muted: #555555;
-      --ink-dim: #888888;
+      --bg-alt: #0d0608;
+      --card-dark: #140b0e;
+      --border-dark: #2a151b;
+      --hairline: #eae3da;
+      --hairline-subtle: #f5f0e9;
+      --ink: #0f0a0c;
+      --ink-muted: #5a5054;
+      --ink-dim: #8a7e84;
       
-      --green-highlight: #178248;
-      --green-btn: #178248;
-      --green-btn-hover: #126839;
-      --green-subtle: #eef8f2;
+      /* Subtle Maroon & Golden Palette */
+      --maroon-primary: #5c1424;
+      --maroon-deep: #430c18;
+      --maroon-light: #791d31;
+      --maroon-subtle: #fdf5f6;
+      
+      --gold-primary: #c5a059;
+      --gold-light: #dfc284;
+      --gold-glow: rgba(197, 160, 89, 0.35);
+      --gold-subtle: #fffbf0;
+      
+      --green-highlight: #5c1424; /* Maroon highlight with gold border */
+      --green-btn: #5c1424;
+      --green-btn-hover: #430c18;
       
       --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --font-mono: 'Geist Mono', "SFMono-Regular", Consolas, Menlo, monospace;
+      --font-display: 'Cinzel', serif;
     }
 
     * {
@@ -40,9 +51,177 @@
       font-family: var(--font-sans);
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    /* Navbar */
+    /* ========================================================
+       CINEMATIC INTRO LOADER (Thunder, Fast Wind, Garden Grass)
+       ======================================================== */
+    #intro-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #090305;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.9s ease;
+      overflow: hidden;
+    }
+
+    #intro-loader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    #nature-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* Thunder Flash Overlay */
+    .thunder-flash {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 30%, rgba(223, 194, 132, 0.45) 0%, rgba(92, 20, 36, 0.3) 50%, transparent 80%);
+      opacity: 0;
+      z-index: 2;
+      pointer-events: none;
+      animation: thunderStrike 2.2s ease-in-out infinite;
+    }
+
+    @keyframes thunderStrike {
+      0%, 90%, 100% { opacity: 0; }
+      92% { opacity: 0.85; filter: brightness(1.6); }
+      93% { opacity: 0.15; }
+      94% { opacity: 0.95; filter: brightness(2); }
+      96% { opacity: 0.1; }
+    }
+
+    .loader-content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      padding: 36px 48px;
+      border-radius: 20px;
+      border: 1px solid rgba(197, 160, 89, 0.25);
+      background: radial-gradient(circle, rgba(20, 9, 13, 0.85) 0%, rgba(9, 3, 5, 0.9) 100%);
+      box-shadow: 0 0 60px rgba(92, 20, 36, 0.5), inset 0 0 30px rgba(197, 160, 89, 0.15);
+      animation: contentFloat 2.4s ease-in-out infinite alternate;
+    }
+
+    @keyframes contentFloat {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-6px); }
+    }
+
+    .loader-logo-ring {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .loader-logo-ring::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px dashed rgba(197, 160, 89, 0.6);
+      animation: spinRing 8s linear infinite;
+    }
+
+    .loader-logo-ring::after {
+      content: '';
+      position: absolute;
+      width: 114%;
+      height: 114%;
+      border-radius: 50%;
+      border: 1px solid rgba(92, 20, 36, 0.8);
+      box-shadow: 0 0 20px rgba(197, 160, 89, 0.4);
+    }
+
+    @keyframes spinRing {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loader-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      object-fit: cover;
+      box-shadow: 0 0 24px var(--gold-glow);
+    }
+
+    .loader-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #ffffff 30%, var(--gold-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .loader-sub {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--gold-primary);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    .loader-bar-wrap {
+      width: 160px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      margin-top: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .loader-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--maroon-light), var(--gold-primary), var(--gold-light));
+      border-radius: 3px;
+      animation: fillProgress 1.8s cubic-bezier(0.1, 0.7, 0.1, 1) forwards;
+    }
+
+    @keyframes fillProgress {
+      0% { width: 0%; }
+      50% { width: 68%; }
+      100% { width: 100%; }
+    }
+
+    /* ========================================================
+       MAIN PAGE STYLING (Vercel/Notion Style + Maroon/Gold Touch)
+       ======================================================== */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -64,23 +243,26 @@
     .brand-logo-wrap {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       text-decoration: none;
       color: var(--ink);
     }
 
     .brand-img {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 6px;
       object-fit: cover;
+      border: 1px solid var(--gold-primary);
+      box-shadow: 0 0 8px rgba(197, 160, 89, 0.25);
     }
 
     .brand-name {
       font-size: 15px;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
+      color: var(--maroon-primary);
     }
 
     .nav-menu {
@@ -98,7 +280,7 @@
     }
 
     .nav-menu a:hover {
-      color: var(--ink);
+      color: var(--maroon-primary);
     }
 
     .nav-right {
@@ -119,14 +301,17 @@
       color: var(--ink);
       text-decoration: none;
       background: #ffffff;
+      transition: all 0.2s;
     }
 
     .github-btn:hover {
-      background: #fafafa;
+      border-color: var(--gold-primary);
+      background: var(--gold-subtle);
     }
 
     .github-star-count {
-      color: var(--ink-muted);
+      color: var(--gold-primary);
+      font-weight: 600;
       display: flex;
       align-items: center;
       gap: 3px;
@@ -140,32 +325,36 @@
     }
 
     .nav-signin:hover {
-      color: var(--ink);
+      color: var(--maroon-primary);
     }
 
+    /* Buttons with Maroon & Gold */
     .btn-green {
-      background: var(--green-btn);
+      background: linear-gradient(135deg, var(--maroon-primary), var(--maroon-deep));
       color: #ffffff;
-      padding: 7px 16px;
+      padding: 8px 18px;
       border-radius: 6px;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      border: none;
+      border: 1px solid var(--gold-primary);
       cursor: pointer;
-      transition: background 0.15s;
+      box-shadow: 0 2px 8px rgba(92, 20, 36, 0.2);
+      transition: all 0.2s;
     }
 
     .btn-green:hover {
-      background: var(--green-btn-hover);
+      background: linear-gradient(135deg, var(--maroon-light), var(--maroon-primary));
+      box-shadow: 0 4px 14px rgba(197, 160, 89, 0.4);
+      transform: translateY(-1px);
     }
 
     .btn-outline {
       background: #ffffff;
       color: var(--ink);
-      border: 1px solid #d1d5db;
+      border: 1px solid #dcd3c8;
       padding: 9px 20px;
       border-radius: 6px;
       font-size: 14px;
@@ -174,14 +363,26 @@
       display: inline-flex;
       align-items: center;
       cursor: pointer;
+      transition: all 0.2s;
     }
 
     .btn-outline:hover {
-      background: #fafafa;
-      border-color: #9ca3af;
+      background: var(--gold-subtle);
+      border-color: var(--gold-primary);
     }
 
-    /* Container */
+    /* Highlight badge with subtle maroon and golden rim */
+    .highlight-pill {
+      background: var(--maroon-primary);
+      color: #ffffff;
+      padding: 2px 10px;
+      border-radius: 3px;
+      display: inline-block;
+      border: 1px solid var(--gold-primary);
+      box-shadow: 0 2px 8px rgba(197, 160, 89, 0.2);
+    }
+
+    /* Containers */
     .section-wrap {
       border-bottom: 1px solid var(--hairline);
       padding: 64px 48px;
@@ -190,15 +391,6 @@
     .grid-container {
       max-width: 1240px;
       margin: 0 auto;
-    }
-
-    /* Green highlight badge */
-    .highlight-pill {
-      background: var(--green-highlight);
-      color: #ffffff;
-      padding: 2px 10px;
-      border-radius: 2px;
-      display: inline-block;
     }
 
     /* Hero Section */
@@ -218,12 +410,12 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      color: #555555;
+      color: var(--ink-muted);
       margin-bottom: 24px;
     }
 
     .yc-box {
-      background: #737373;
+      background: var(--gold-primary);
       color: #fff;
       font-weight: 700;
       padding: 1px 5px;
@@ -240,7 +432,7 @@
     }
 
     .hero-subtitle {
-      color: #4b5563;
+      color: var(--ink-muted);
       font-size: 16px;
       line-height: 1.6;
       max-width: 520px;
@@ -250,19 +442,19 @@
     .api-endpoint-pill {
       display: inline-flex;
       align-items: center;
-      background: #f4f6f5;
-      border: 1px solid #e2e8e5;
+      background: var(--maroon-subtle);
+      border: 1px solid rgba(197, 160, 89, 0.35);
       padding: 8px 14px;
       border-radius: 4px;
       font-family: var(--font-mono);
       font-size: 13px;
-      color: #374151;
+      color: var(--maroon-primary);
       margin-bottom: 28px;
     }
 
     .api-endpoint-pill span.method {
-      color: var(--green-highlight);
-      font-weight: 600;
+      color: var(--gold-primary);
+      font-weight: 700;
       margin-right: 8px;
     }
 
@@ -272,12 +464,7 @@
       align-items: center;
     }
 
-    .hero-cta-group .btn-green {
-      padding: 10px 22px;
-      font-size: 14px;
-    }
-
-    /* Hero Diagram (Right) */
+    /* Hero Diagram */
     .diagram-container {
       position: relative;
       display: flex;
@@ -295,31 +482,34 @@
     }
 
     .one-key-box {
-      width: 120px;
-      height: 120px;
-      border: 1.5px solid var(--green-highlight);
-      border-radius: 4px;
+      width: 124px;
+      height: 124px;
+      border: 1.5px solid var(--gold-primary);
+      border-radius: 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       gap: 8px;
       background: #ffffff;
+      box-shadow: 0 4px 16px rgba(197, 160, 89, 0.18);
       z-index: 2;
     }
 
     .one-key-box img {
-      width: 32px;
-      height: 32px;
-      border-radius: 4px;
+      width: 44px;
+      height: 44px;
+      border-radius: 6px;
+      object-fit: cover;
+      border: 1px solid var(--maroon-light);
     }
 
     .one-key-label {
       font-family: var(--font-mono);
       font-size: 10px;
-      font-weight: 600;
-      color: #374151;
-      letter-spacing: 0.05em;
+      font-weight: 700;
+      color: var(--maroon-primary);
+      letter-spacing: 0.08em;
     }
 
     .diagram-lines {
@@ -352,37 +542,38 @@
       transition: all 0.2s;
     }
 
-    .provider-cell.active-green {
-      border: 1.5px solid var(--green-highlight);
+    .provider-cell.active-maroon {
+      border: 1.5px solid var(--gold-primary);
+      background: var(--gold-subtle);
     }
 
     .provider-cell:hover {
-      border-color: #999;
-      transform: scale(1.04);
+      border-color: var(--gold-primary);
+      transform: scale(1.05);
     }
 
     .diagram-caption {
       margin-top: 32px;
       font-family: var(--font-mono);
       font-size: 12px;
-      color: #374151;
+      color: var(--ink-muted);
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
     .diagram-caption .post-tag {
-      color: var(--green-highlight);
-      font-weight: 600;
+      color: var(--maroon-primary);
+      font-weight: 700;
     }
 
-    /* Price section */
+    /* 0% Section */
     .price-headline-grid {
       display: grid;
       grid-template-columns: 240px 1fr;
       gap: 48px;
       align-items: center;
-      padding: 40px 0;
+      padding: 24px 0;
     }
 
     .big-percent {
@@ -390,6 +581,7 @@
       font-weight: 700;
       line-height: 1;
       letter-spacing: -0.05em;
+      color: var(--maroon-primary);
     }
 
     .price-text h2 {
@@ -400,20 +592,117 @@
     }
 
     .price-text p {
-      color: #6b7280;
+      color: var(--ink-muted);
       font-size: 15px;
     }
 
     .price-text a {
-      color: var(--green-highlight);
+      color: var(--maroon-primary);
+      font-weight: 600;
       text-decoration: underline;
     }
 
-    /* Dark Case Studies Section */
+    /* Intelligence 3-Col Section */
+    .intel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+    }
+
+    .intel-header h2 {
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      margin-bottom: 8px;
+    }
+
+    .intel-header p {
+      color: var(--ink-muted);
+      font-size: 15px;
+    }
+
+    .intel-link {
+      color: var(--maroon-primary);
+      font-size: 14px;
+      text-decoration: none;
+      border-bottom: 1px solid var(--gold-primary);
+      padding-bottom: 2px;
+      font-weight: 500;
+    }
+
+    .intel-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .intel-col {
+      padding: 36px 28px;
+      border-right: 1px solid var(--hairline);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .intel-col:last-child {
+      border-right: none;
+    }
+
+    .intel-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--gold-primary);
+      font-weight: 600;
+      margin-bottom: 32px;
+    }
+
+    .intel-diagram {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .intel-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .intel-body {
+      color: var(--ink-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Console Section */
+    .console-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .console-header h2 {
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      margin-bottom: 8px;
+    }
+
+    .console-header p {
+      color: var(--ink-muted);
+      font-size: 15px;
+    }
+
+    /* Case Studies (Dark Section - MOVED TO THE LAST) */
     .case-studies-section {
       background: var(--bg-alt);
       color: #ffffff;
       padding: 72px 48px;
+      border-top: 2px solid var(--gold-primary);
     }
 
     .case-studies-section h2 {
@@ -421,10 +710,13 @@
       font-weight: 700;
       letter-spacing: -0.03em;
       margin-bottom: 8px;
+      background: linear-gradient(120deg, #ffffff, var(--gold-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .case-studies-section .section-sub {
-      color: #9ca3af;
+      color: #a89f91;
       font-size: 15px;
       max-width: 680px;
       margin-bottom: 48px;
@@ -439,14 +731,21 @@
     .case-card {
       background: var(--card-dark);
       border: 1px solid var(--border-dark);
-      border-radius: 6px;
+      border-radius: 8px;
       padding: 36px 32px;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .case-card:hover {
+      border-color: var(--gold-primary);
+      box-shadow: 0 0 20px rgba(197, 160, 89, 0.15);
     }
 
     .case-tag {
       font-family: var(--font-mono);
       font-size: 11px;
-      color: #6b7280;
+      color: var(--gold-primary);
       letter-spacing: 0.08em;
       text-transform: uppercase;
       margin-bottom: 24px;
@@ -476,7 +775,7 @@
     }
 
     .case-link {
-      color: #ffffff;
+      color: var(--gold-light);
       text-decoration: none;
       font-size: 13px;
       font-weight: 500;
@@ -484,84 +783,6 @@
 
     .case-link:hover {
       text-decoration: underline;
-    }
-
-    /* Intelligence 3-Col Section */
-    .intel-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-bottom: 48px;
-    }
-
-    .intel-header h2 {
-      font-size: 38px;
-      font-weight: 700;
-      letter-spacing: -0.035em;
-      margin-bottom: 8px;
-    }
-
-    .intel-header p {
-      color: #6b7280;
-      font-size: 15px;
-    }
-
-    .intel-link {
-      color: #4b5563;
-      font-size: 14px;
-      text-decoration: none;
-      border-bottom: 1px solid #d1d5db;
-      padding-bottom: 2px;
-    }
-
-    .intel-link:hover {
-      color: #000;
-    }
-
-    .intel-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      border-top: 1px solid var(--hairline);
-      border-bottom: 1px solid var(--hairline);
-    }
-
-    .intel-col {
-      padding: 36px 28px;
-      border-right: 1px solid var(--hairline);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .intel-col:last-child {
-      border-right: none;
-    }
-
-    .intel-num {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: #9ca3af;
-      margin-bottom: 32px;
-    }
-
-    .intel-diagram {
-      height: 140px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 32px;
-    }
-
-    .intel-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      letter-spacing: -0.02em;
-    }
-
-    .intel-body {
-      color: #6b7280;
-      font-size: 14px;
-      line-height: 1.6;
     }
 
     /* Floating bottom-right toggle */
@@ -572,9 +793,9 @@
       display: flex;
       align-items: center;
       background: #ffffff;
-      border: 1px solid var(--hairline);
+      border: 1px solid var(--gold-primary);
       border-radius: 6px;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 16px rgba(92, 20, 36, 0.15);
       padding: 3px;
       z-index: 1000;
     }
@@ -584,7 +805,7 @@
       background: transparent;
       border: none;
       cursor: pointer;
-      color: #555;
+      color: var(--gold-primary);
       font-size: 14px;
       border-right: 1px solid var(--hairline);
     }
@@ -599,18 +820,37 @@
     }
 
     .mode-pill.active {
-      background: #000000;
+      background: var(--maroon-primary);
       color: #ffffff;
     }
   </style>
 </head>
 <body>
 
+  <!-- ========================================================
+       CINEMATIC INTRO LOADER WITH LIGHT, THUNDER & WIND-BLOWN GRASS
+       ======================================================== -->
+  <div id="intro-loader">
+    <canvas id="nature-canvas"></canvas>
+    <div class="thunder-flash"></div>
+    
+    <div class="loader-content">
+      <div class="loader-logo-ring">
+        <img src="tatva-logo.jpg" alt="Tatva AI Logo" class="loader-img" onerror="this.src='tatva-icon.jpg'" />
+      </div>
+      <div class="loader-title">TATVA AI</div>
+      <div class="loader-sub">Awakening Universal Model Gateway</div>
+      <div class="loader-bar-wrap">
+        <div class="loader-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- Top Navbar -->
   <nav class="navbar">
     <div class="nav-left">
       <a href="#" class="brand-logo-wrap">
-        <img src="../tatva-icon.jpg" alt="Tatva AI Logo" class="brand-img" />
+        <img src="tatva-logo.jpg" alt="Tatva AI Logo" class="brand-img" onerror="this.src='tatva-icon.jpg'" />
         <span class="brand-name">Tatva AI</span>
       </a>
       <ul class="nav-menu">
@@ -634,7 +874,7 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
+  <!-- 1. Hero Section -->
   <section class="section-wrap">
     <div class="grid-container">
       <div class="hero-grid">
@@ -666,15 +906,15 @@
           <div class="diagram-mesh">
             <!-- Center One Key box -->
             <div class="one-key-box">
-              <img src="../tatva-icon.jpg" alt="Logo" />
+              <img src="tatva-logo.jpg" alt="Tatva Logo" onerror="this.src='tatva-icon.jpg'" />
               <span class="one-key-label">ONE KEY</span>
             </div>
 
-            <!-- SVG connection lines -->
+            <!-- SVG connection lines in Gold/Maroon -->
             <svg class="diagram-lines" viewBox="0 0 60 180">
-              <path d="M 0 90 L 30 90 L 30 26 L 60 26" fill="none" stroke="#178248" stroke-width="1.5" />
-              <path d="M 30 90 L 60 90" fill="none" stroke="#178248" stroke-width="1.5" />
-              <path d="M 30 90 L 30 154 L 60 154" fill="none" stroke="#178248" stroke-width="1.5" />
+              <path d="M 0 90 L 30 90 L 30 26 L 60 26" fill="none" stroke="#c5a059" stroke-width="1.5" />
+              <path d="M 30 90 L 60 90" fill="none" stroke="#5c1424" stroke-width="1.5" />
+              <path d="M 30 90 L 30 154 L 60 154" fill="none" stroke="#c5a059" stroke-width="1.5" />
             </svg>
 
             <!-- 3x3 Provider Grid -->
@@ -687,7 +927,7 @@
               <div class="provider-cell">🌀</div>
               <div class="provider-cell">Ⓜ️</div>
               <div class="provider-cell">🌐</div>
-              <div class="provider-cell active-green">🎯</div>
+              <div class="provider-cell active-maroon">🎯</div>
             </div>
           </div>
 
@@ -699,7 +939,7 @@
     </div>
   </section>
 
-  <!-- 0% Markup Section -->
+  <!-- 2. 0% Markup Section -->
   <section class="section-wrap" style="padding: 48px 48px;">
     <div class="grid-container">
       <div class="price-headline-grid">
@@ -712,7 +952,110 @@
     </div>
   </section>
 
-  <!-- Case Studies (Dark Section) -->
+  <!-- 3. Intelligence Layer (3 Columns) -->
+  <section class="section-wrap">
+    <div class="grid-container">
+      <div class="intel-header">
+        <div>
+          <h2>Make your AI <span class="highlight-pill">better, faster, cheaper.</span></h2>
+          <p>The gateway routes. The intelligence layer improves what flows through it.</p>
+        </div>
+        <div>
+          <a href="#" class="intel-link">How the intelligence layer works →</a>
+        </div>
+      </div>
+
+      <!-- 3 Columns -->
+      <div class="intel-grid">
+        <!-- Col 1 -->
+        <div class="intel-col">
+          <div class="intel-num">01</div>
+          <div class="intel-diagram">
+            <svg width="180" height="100" viewBox="0 0 180 100">
+              <circle cx="20" cy="50" r="3" fill="#666" />
+              <circle cx="30" cy="20" r="3" fill="#666" />
+              <circle cx="30" cy="80" r="3" fill="#666" />
+              <line x1="20" y1="50" x2="60" y2="50" stroke="#ccc" stroke-width="1" />
+              <line x1="30" y1="20" x2="60" y2="50" stroke="#ccc" stroke-width="1" />
+              <line x1="30" y1="80" x2="60" y2="50" stroke="#ccc" stroke-width="1" />
+              <rect x="60" y="36" width="54" height="28" fill="#fff" stroke="#c5a059" rx="2" />
+              <text x="87" y="54" font-size="10" font-family="monospace" text-anchor="middle" fill="#333">gateway</text>
+              <line x1="114" y1="50" x2="134" y2="50" stroke="#5c1424" stroke-width="1.5" />
+              <rect x="134" y="34" width="44" height="32" fill="#5c1424" stroke="#c5a059" stroke-width="1" rx="2" />
+              <text x="156" y="54" font-size="9" font-family="monospace" text-anchor="middle" fill="#fff">gpt-5</text>
+            </svg>
+          </div>
+          <h3 class="intel-title">The right model</h3>
+          <p class="intel-body">
+            We watch your traffic and tell you when a switch wins, including new models the day they ship. Turnkey per-prompt optimization, if you want it.
+          </p>
+        </div>
+
+        <!-- Col 2 -->
+        <div class="intel-col">
+          <div class="intel-num">02</div>
+          <div class="intel-diagram">
+            <div style="width: 100%; padding: 0 10px;">
+              <div style="font-family: monospace; font-size: 11px; color: #666; margin-bottom: 4px;">first call</div>
+              <div style="height: 18px; background: #e5dec9; width: 100%; border-radius: 2px; margin-bottom: 16px;"></div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="height: 18px; background: #5c1424; width: 18%; border-radius: 2px; border: 1px solid #c5a059;"></div>
+                <div style="font-family: monospace; font-size: 11px; color: #5c1424; font-weight: 700;">90% off</div>
+              </div>
+              <div style="font-family: monospace; font-size: 11px; color: #666; margin-top: 4px;">repeated call</div>
+            </div>
+          </div>
+          <h3 class="intel-title">Caching</h3>
+          <p class="intel-body">
+            We catch opportunities to improve cache hit rate, and show what they would save. Repeated tokens come back at 90% off when you turn it on.
+          </p>
+        </div>
+
+        <!-- Col 3 -->
+        <div class="intel-col">
+          <div class="intel-num">03</div>
+          <div class="intel-diagram">
+            <svg width="190" height="100" viewBox="0 0 190 100">
+              <text x="95" y="24" font-size="9" font-family="monospace" text-anchor="middle" fill="#555">proved in simulation</text>
+              <line x1="20" y1="50" x2="40" y2="50" stroke="#999" stroke-width="1" stroke-dasharray="2 2" />
+              <rect x="40" y="38" width="48" height="24" fill="#fff" stroke="#ccc" rx="2" />
+              <text x="64" y="53" font-size="9" font-family="monospace" text-anchor="middle" fill="#333">fine-tune</text>
+              <circle cx="104" cy="50" r="8" fill="#fff" stroke="#c5a059" />
+              <text x="104" y="53" font-size="10" text-anchor="middle" fill="#5c1424">✓</text>
+              <rect x="122" y="34" width="58" height="32" fill="#5c1424" stroke="#c5a059" stroke-width="1" rx="2" />
+              <text x="151" y="53" font-size="9" font-family="monospace" text-anchor="middle" fill="#fff">your model</text>
+              <text x="40" y="80" font-size="9" font-family="monospace" fill="#666">your traffic</text>
+              <text x="130" y="80" font-size="9" font-family="monospace" fill="#666">same endpoint</text>
+            </svg>
+          </div>
+          <h3 class="intel-title">A model you own</h3>
+          <p class="intel-body">
+            Fine-tuned on your traffic, proved before it serves, and reached through the same endpoint. You turn it on; it never happens on its own.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Console Section -->
+  <section class="section-wrap">
+    <div class="grid-container">
+      <div class="console-header">
+        <div>
+          <h2>
+            Every request and every dollar,<br />
+            <span class="highlight-pill">in one console.</span>
+          </h2>
+          <p>Catalog, usage, and limits for the whole org, by agent, person, model, or day.</p>
+        </div>
+        <div>
+          <a href="#" class="intel-link">Open the console →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Case Studies (MOVED TO THE LAST) -->
   <section class="case-studies-section">
     <div class="grid-container">
       <h2>Case studies</h2>
@@ -748,109 +1091,6 @@
     </div>
   </section>
 
-  <!-- Console Section -->
-  <section class="section-wrap">
-    <div class="grid-container">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-        <div>
-          <h2 style="font-size: 38px; font-weight: 700; letter-spacing: -0.035em; margin-bottom: 8px;">
-            Every request and every dollar,<br />
-            <span class="highlight-pill">in one console.</span>
-          </h2>
-          <p style="color: #6b7280; font-size: 15px;">Catalog, usage, and limits for the whole org, by agent, person, model, or day.</p>
-        </div>
-        <div>
-          <a href="#" class="intel-link">Open the console →</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Intelligence Layer 3-Column Section -->
-  <section class="section-wrap" style="border-bottom: none;">
-    <div class="grid-container">
-      <div class="intel-header">
-        <div>
-          <h2>Make your AI <span class="highlight-pill">better, faster, cheaper.</span></h2>
-          <p>The gateway routes. The intelligence layer improves what flows through it.</p>
-        </div>
-        <div>
-          <a href="#" class="intel-link">How the intelligence layer works →</a>
-        </div>
-      </div>
-
-      <!-- 3 Columns -->
-      <div class="intel-grid">
-        <!-- Col 1 -->
-        <div class="intel-col">
-          <div class="intel-num">01</div>
-          <div class="intel-diagram">
-            <svg width="180" height="100" viewBox="0 0 180 100">
-              <circle cx="20" cy="50" r="3" fill="#666" />
-              <circle cx="30" cy="20" r="3" fill="#666" />
-              <circle cx="30" cy="80" r="3" fill="#666" />
-              <line x1="20" y1="50" x2="60" y2="50" stroke="#ccc" stroke-width="1" />
-              <line x1="30" y1="20" x2="60" y2="50" stroke="#ccc" stroke-width="1" />
-              <line x1="30" y1="80" x2="60" y2="50" stroke="#ccc" stroke-width="1" />
-              <rect x="60" y="36" width="54" height="28" fill="#fff" stroke="#ccc" rx="2" />
-              <text x="87" y="54" font-size="10" font-family="monospace" text-anchor="middle" fill="#333">gateway</text>
-              <line x1="114" y1="50" x2="134" y2="50" stroke="#178248" stroke-width="1.5" />
-              <rect x="134" y="34" width="44" height="32" fill="#178248" rx="2" />
-              <text x="156" y="54" font-size="9" font-family="monospace" text-anchor="middle" fill="#fff">gpt-5</text>
-            </svg>
-          </div>
-          <h3 class="intel-title">The right model</h3>
-          <p class="intel-body">
-            We watch your traffic and tell you when a switch wins, including new models the day they ship. Turnkey per-prompt optimization, if you want it.
-          </p>
-        </div>
-
-        <!-- Col 2 -->
-        <div class="intel-col">
-          <div class="intel-num">02</div>
-          <div class="intel-diagram">
-            <div style="width: 100%; padding: 0 10px;">
-              <div style="font-family: monospace; font-size: 11px; color: #666; margin-bottom: 4px;">first call</div>
-              <div style="height: 18px; background: #d1d5db; width: 100%; border-radius: 2px; margin-bottom: 16px;"></div>
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="height: 18px; background: #178248; width: 18%; border-radius: 2px;"></div>
-                <div style="font-family: monospace; font-size: 11px; color: #178248; font-weight: 600;">90% off</div>
-              </div>
-              <div style="font-family: monospace; font-size: 11px; color: #666; margin-top: 4px;">repeated call</div>
-            </div>
-          </div>
-          <h3 class="intel-title">Caching</h3>
-          <p class="intel-body">
-            We catch opportunities to improve cache hit rate, and show what they would save. Repeated tokens come back at 90% off when you turn it on.
-          </p>
-        </div>
-
-        <!-- Col 3 -->
-        <div class="intel-col">
-          <div class="intel-num">03</div>
-          <div class="intel-diagram">
-            <svg width="190" height="100" viewBox="0 0 190 100">
-              <text x="95" y="24" font-size="9" font-family="monospace" text-anchor="middle" fill="#555">proved in simulation</text>
-              <line x1="20" y1="50" x2="40" y2="50" stroke="#999" stroke-width="1" stroke-dasharray="2 2" />
-              <rect x="40" y="38" width="48" height="24" fill="#fff" stroke="#ccc" rx="2" />
-              <text x="64" y="53" font-size="9" font-family="monospace" text-anchor="middle" fill="#333">fine-tune</text>
-              <circle cx="104" cy="50" r="8" fill="#fff" stroke="#999" />
-              <text x="104" y="53" font-size="10" text-anchor="middle" fill="#178248">✓</text>
-              <rect x="122" y="34" width="58" height="32" fill="#178248" rx="2" />
-              <text x="151" y="53" font-size="9" font-family="monospace" text-anchor="middle" fill="#fff">your model</text>
-              <text x="40" y="80" font-size="9" font-family="monospace" fill="#666">your traffic</text>
-              <text x="130" y="80" font-size="9" font-family="monospace" fill="#666">same endpoint</text>
-            </svg>
-          </div>
-          <h3 class="intel-title">A model you own</h3>
-          <p class="intel-body">
-            Fine-tuned on your traffic, proved before it serves, and reached through the same endpoint. You turn it on; it never happens on its own.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Floating bottom-right toggle -->
   <div class="bottom-toggle">
     <button class="theme-toggle-btn" title="Toggle theme">☀️</button>
@@ -858,5 +1098,99 @@
     <div class="mode-pill">Agent</div>
   </div>
 
+  <!-- Nature Animation Script (Grass, Wind & Lightning) -->
+  <script>
+    (function() {
+      const canvas = document.getElementById('nature-canvas');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      // Grass blades
+      const blades = [];
+      const numBlades = Math.floor(width / 7);
+      for (let i = 0; i < numBlades; i++) {
+        blades.push({
+          x: (i * 7) + (Math.random() * 4),
+          height: 100 + Math.random() * 90,
+          curve: (Math.random() - 0.5) * 20,
+          speed: 0.04 + Math.random() * 0.05,
+          color: Math.random() > 0.4 ? '#380c16' : '#5c1424',
+          tipColor: Math.random() > 0.5 ? '#c5a059' : '#dfc284'
+        });
+      }
+
+      // Wind particles
+      const particles = [];
+      for (let i = 0; i < 40; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: 8 + Math.random() * 12,
+          vy: (Math.random() - 0.5) * 2,
+          len: 30 + Math.random() * 50,
+          alpha: 0.2 + Math.random() * 0.4
+        });
+      }
+
+      let time = 0;
+      function animate() {
+        time += 0.04;
+        ctx.clearRect(0, 0, width, height);
+
+        // Draw fast air particles
+        ctx.lineWidth = 1;
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x > width) p.x = -p.len;
+
+          ctx.strokeStyle = `rgba(197, 160, 89, ${p.alpha})`;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x + p.len, p.y + p.vy * 2);
+          ctx.stroke();
+        });
+
+        // Fast wind oscillation for garden grass
+        const wind = Math.sin(time * 2.5) * 45 + Math.cos(time * 4) * 25 + 30;
+
+        // Draw swaying garden grass
+        blades.forEach(b => {
+          const sway = Math.sin(time * b.speed * 3) * wind * (b.height / 150);
+          const tipX = b.x + sway + b.curve;
+          const tipY = height - b.height;
+
+          const grad = ctx.createLinearGradient(b.x, height, tipX, tipY);
+          grad.addColorStop(0, b.color);
+          grad.addColorStop(1, b.tipColor);
+
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 2.5;
+          ctx.beginPath();
+          ctx.moveTo(b.x, height);
+          ctx.quadraticCurveTo(b.x, height - (b.height * 0.5), tipX, tipY);
+          ctx.stroke();
+        });
+
+        requestAnimationFrame(animate);
+      }
+      animate();
+
+      // Smooth Fade-away of intro screen after 2.4s
+      setTimeout(() => {
+        const loader = document.getElementById('intro-loader');
+        if (loader) {
+          loader.classList.add('fade-out');
+        }
+      }, 2400);
+    })();
+  </script>
 </body>
 </html>
