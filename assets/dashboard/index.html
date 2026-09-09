@@ -3,34 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tatva AI · Universal Model Gateway & Agent Router</title>
+  <title>Tatva AI · Model Gateway & Agent Router</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-base: #0a0a12;
-      --bg-surface: #121222;
-      --bg-card: rgba(22, 22, 38, 0.7);
-      --bg-card-hover: rgba(30, 30, 52, 0.85);
-      --border-subtle: rgba(157, 78, 221, 0.18);
-      --border-glow: rgba(255, 122, 0, 0.35);
+      --bg: #ffffff;
+      --bg-subtle: #fafafa;
+      --bg-card: #ffffff;
+      --border: #ececec;
+      --border-strong: #e0e0e0;
       
-      --accent-orange: #ff7a00;
-      --accent-orange-glow: rgba(255, 122, 0, 0.4);
-      --accent-purple: #9d4edd;
-      --accent-purple-glow: rgba(157, 78, 221, 0.4);
+      --ink: #0a0a0a;
+      --ink-muted: #666666;
+      --ink-dim: #888888;
       
-      --text-main: #f5f5f7;
-      --text-muted: #8e8ea8;
-      --text-dim: #5c5c76;
-      
-      --badge-green: #10b981;
-      --badge-purple: #c084fc;
-      --badge-orange: #fb923c;
-      
-      --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --accent-blue: #0070f3;
+      --accent-purple: #7928ca;
+      --accent-amber: #f5a623;
+      --accent-red: #ee0000;
+      --accent-teal: #50e3c2;
+      --accent-green: #00875a;
+
+      --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'Geist Mono', "SFMono-Regular", Consolas, Menlo, monospace;
     }
 
     * {
@@ -40,678 +37,447 @@
     }
 
     body {
-      background-color: var(--bg-base);
-      color: var(--text-main);
+      background-color: var(--bg);
+      color: var(--ink);
       font-family: var(--font-sans);
       min-height: 100vh;
       line-height: 1.5;
-      overflow-x: hidden;
-      background-image: 
-        radial-gradient(circle at 15% 15%, rgba(157, 78, 221, 0.12) 0%, transparent 45%),
-        radial-gradient(circle at 85% 20%, rgba(255, 122, 0, 0.1) 0%, transparent 40%),
-        radial-gradient(circle at 50% 80%, rgba(157, 78, 221, 0.08) 0%, transparent 50%);
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* Layout */
-    .app-container {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      width: 260px;
-      background: rgba(14, 14, 26, 0.85);
-      backdrop-filter: blur(20px);
-      border-right: 1px solid var(--border-subtle);
-      padding: 28px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-      position: sticky;
-      top: 0;
-      height: 100vh;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      text-decoration: none;
-    }
-
-    .brand-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #ff7a00, #9d4edd);
-      padding: 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 0 20px var(--accent-purple-glow);
-    }
-
-    .brand-icon-inner {
-      width: 100%;
-      height: 100%;
-      background: #0d0d18;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-    }
-
-    .brand-title {
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      background: linear-gradient(120deg, #ffffff, #ffb266);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .brand-badge {
-      font-size: 10px;
-      font-family: var(--font-mono);
-      background: rgba(157, 78, 221, 0.2);
-      color: var(--accent-purple);
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid rgba(157, 78, 221, 0.3);
-      font-weight: 600;
-      margin-left: 6px;
-    }
-
-    .nav-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .nav-item a {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: all 0.2s ease;
-    }
-
-    .nav-item.active a, .nav-item a:hover {
-      background: rgba(157, 78, 221, 0.12);
-      color: #fff;
-      border: 1px solid rgba(157, 78, 221, 0.25);
-    }
-
-    .nav-item.active a {
-      border-left: 3px solid var(--accent-orange);
-    }
-
-    .sidebar-footer {
-      margin-top: auto;
-      padding: 16px;
-      background: rgba(255, 122, 0, 0.05);
-      border: 1px solid rgba(255, 122, 0, 0.2);
-      border-radius: 12px;
-      font-size: 12px;
-    }
-
-    .sidebar-footer .status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 600;
-      color: var(--accent-orange);
-      margin-bottom: 4px;
-    }
-
-    .dot-live {
-      width: 8px;
-      height: 8px;
-      background: var(--accent-orange);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--accent-orange);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-
-    /* Main Content */
-    .main-content {
-      flex: 1;
-      padding: 32px 40px;
-      overflow-y: auto;
-    }
-
-    /* Header */
-    .top-header {
+    /* Top Nav */
+    .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 32px;
+      padding: 16px 40px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
-    .page-title {
-      font-size: 26px;
-      font-weight: 700;
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+
+    .brand-title {
+      font-size: 16px;
+      font-weight: 600;
       letter-spacing: -0.02em;
     }
 
-    .page-subtitle {
-      color: var(--text-muted);
-      font-size: 14px;
-      margin-top: 2px;
-    }
-
-    .header-actions {
+    .nav-links {
       display: flex;
-      gap: 12px;
-      align-items: center;
+      gap: 24px;
+      list-style: none;
     }
 
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 18px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
+    .nav-links a {
+      color: var(--ink-muted);
       text-decoration: none;
-      transition: all 0.2s;
-      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 400;
+      transition: color 0.15s;
     }
 
-    .btn-primary {
-      background: linear-gradient(135deg, #ff7a00, #9d4edd);
-      color: #fff;
-      border: none;
-      box-shadow: 0 4px 16px rgba(255, 122, 0, 0.3);
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--ink);
+      font-weight: 500;
     }
 
-    .btn-primary:hover {
-      box-shadow: 0 6px 22px rgba(157, 78, 221, 0.5);
-      transform: translateY(-1px);
+    .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: var(--ink-muted);
     }
 
-    .btn-outline {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text-main);
-      border: 1px solid var(--border-subtle);
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent-green);
+      border-radius: 50%;
     }
 
-    .btn-outline:hover {
-      background: rgba(255, 255, 255, 0.08);
-      border-color: var(--accent-purple);
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px;
     }
 
-    /* Stats Grid */
-    .stats-grid {
+    /* Header */
+    .page-header {
+      margin-bottom: 36px;
+    }
+
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .page-header p {
+      color: var(--ink-muted);
+      font-size: 15px;
+    }
+
+    /* Stats Row */
+    .stats-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
+      gap: 16px;
       margin-bottom: 32px;
     }
 
     .stat-card {
       background: var(--bg-card);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      padding: 22px;
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
     }
 
-    .stat-card:hover {
-      border-color: var(--accent-purple);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(157, 78, 221, 0.15);
-    }
-
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent-orange), var(--accent-purple));
-      opacity: 0.8;
-    }
-
-    .stat-header {
-      display: flex;
-      justify-content: space-between;
-      color: var(--text-muted);
+    .stat-label {
       font-size: 13px;
+      color: var(--ink-muted);
+      margin-bottom: 8px;
       font-weight: 500;
-      margin-bottom: 12px;
     }
 
     .stat-value {
-      font-size: 28px;
-      font-weight: 700;
-      font-family: var(--font-sans);
+      font-size: 24px;
+      font-weight: 600;
       letter-spacing: -0.02em;
     }
 
-    .stat-sub {
-      margin-top: 6px;
+    .stat-caption {
       font-size: 12px;
-      color: var(--accent-orange);
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      color: var(--ink-dim);
+      margin-top: 4px;
     }
 
-    /* Content Layout */
-    .grid-2col {
+    /* Grid Sections */
+    .grid-layout {
       display: grid;
-      grid-template-columns: 1.4fr 1fr;
+      grid-template-columns: 1.5fr 1fr;
       gap: 24px;
       margin-bottom: 32px;
     }
 
     .card {
       background: var(--bg-card);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
       padding: 24px;
     }
 
     .card-title {
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 600;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    /* Playground / Interactive tester */
-    .tester-area {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-      font-weight: 500;
-    }
-
-    .select-input, .text-input, .textarea-input {
-      width: 100%;
-      background: #0d0d1a;
-      border: 1px solid var(--border-subtle);
-      border-radius: 8px;
-      color: #fff;
-      font-family: var(--font-sans);
-      font-size: 13px;
-      padding: 10px 14px;
-      outline: none;
-      transition: border 0.2s;
-    }
-
-    .select-input:focus, .text-input:focus, .textarea-input:focus {
-      border-color: var(--accent-orange);
-      box-shadow: 0 0 10px rgba(255, 122, 0, 0.2);
-    }
-
-    .terminal-box {
-      background: #070710;
-      border: 1px solid rgba(157, 78, 221, 0.25);
-      border-radius: 10px;
-      padding: 16px;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: #d1d5db;
-      min-height: 140px;
-      max-height: 200px;
-      overflow-y: auto;
-      white-space: pre-wrap;
-    }
-
-    /* Model Routing Table */
-    .custom-table {
+    /* Table */
+    .table-container {
       width: 100%;
       border-collapse: collapse;
       font-size: 13px;
     }
 
-    .custom-table th {
+    .table-container th {
       text-align: left;
-      padding: 10px 14px;
-      color: var(--text-muted);
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink-muted);
       font-weight: 500;
-      border-bottom: 1px solid var(--border-subtle);
       font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
     }
 
-    .custom-table td {
-      padding: 12px 14px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    .table-container td {
+      padding: 12px;
+      border-bottom: 1px solid var(--border);
     }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 600;
+    .code-tag {
       font-family: var(--font-mono);
-    }
-
-    .badge-routed {
-      background: rgba(255, 122, 0, 0.15);
-      color: var(--accent-orange);
-      border: 1px solid rgba(255, 122, 0, 0.3);
-    }
-
-    .badge-success {
-      background: rgba(16, 185, 129, 0.15);
-      color: #34d399;
-    }
-
-    .badge-purple-tag {
-      background: rgba(157, 78, 221, 0.15);
-      color: #c084fc;
-      border: 1px solid rgba(157, 78, 221, 0.3);
-    }
-
-    /* Code preview snippet */
-    .code-pill {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      background: rgba(255, 255, 255, 0.06);
-      padding: 3px 6px;
+      font-size: 12px;
+      background: var(--bg-subtle);
+      padding: 2px 6px;
       border-radius: 4px;
-      color: #ffb266;
+      border: 1px solid var(--border);
+    }
+
+    /* Playground / Tester */
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: var(--ink);
+    }
+
+    .input-control {
+      width: 100%;
+      padding: 9px 12px;
+      font-size: 13px;
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .input-control:focus {
+      border-color: var(--ink);
+    }
+
+    .btn-submit {
+      background: var(--ink);
+      color: #ffffff;
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .btn-submit:hover {
+      background: #262626;
+    }
+
+    .terminal-view {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--ink);
+      margin-top: 14px;
+      white-space: pre-wrap;
+      min-height: 100px;
     }
   </style>
 </head>
 <body>
-  <div class="app-container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <a href="#" class="brand">
-        <div class="brand-icon">
-          <div class="brand-icon-inner">🪷</div>
-        </div>
-        <div>
-          <div style="display:flex; align-items:center;">
-            <span class="brand-title">TATVA AI</span>
-            <span class="brand-badge">v1.0</span>
-          </div>
-          <div style="font-size:11px; color:var(--text-muted);">Agent Gateway & Router</div>
-        </div>
-      </a>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <a href="#" class="brand-section">
+      <img src="../tatva-icon.jpg" alt="Tatva AI Logo" class="brand-logo" onerror="this.style.display='none'" />
+      <span class="brand-title">Tatva AI</span>
+    </a>
 
-      <ul class="nav-list">
-        <li class="nav-item active"><a href="#">📊 Gateway Overview</a></li>
-        <li class="nav-item"><a href="#">⚡ Intelligent Router</a></li>
-        <li class="nav-item"><a href="#">🔑 API Keys & Budgets</a></li>
-        <li class="nav-item"><a href="#">🧪 Trace Simulation</a></li>
-        <li class="nav-item"><a href="#">🎯 Model Distillation (SFT)</a></li>
-        <li class="nav-item"><a href="#">⚙️ Configuration</a></li>
-      </ul>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Overview</a></li>
+      <li><a href="#">Router</a></li>
+      <li><a href="#">Models</a></li>
+      <li><a href="#">Spend</a></li>
+      <li><a href="#">Settings</a></li>
+    </ul>
 
-      <div class="sidebar-footer">
-        <div class="status">
-          <div class="dot-live"></div>
-          <span>Loopback Gateway Active</span>
-        </div>
-        <div style="color: var(--text-muted); font-family: var(--font-mono);">http://127.0.0.1:8000/v1</div>
+    <div class="status-badge">
+      <div class="status-dot"></div>
+      <span>127.0.0.1:8000</span>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container">
+    <header class="page-header">
+      <h1>Gateway & Router Control Plane</h1>
+      <p>Local OpenAI-compatible API gateway and intelligent model router.</p>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Total Requests</div>
+        <div class="stat-value">14,280</div>
+        <div class="stat-caption">+24.8% past 24h</div>
       </div>
-    </aside>
-
-    <!-- Main Content Area -->
-    <main class="main-content">
-      <!-- Top Bar -->
-      <header class="top-header">
-        <div>
-          <h1 class="page-title">Tatva Gateway & Router Control Plane</h1>
-          <p class="page-subtitle">Inspired by Vision, Driven by Precision · OpenAI & Anthropic Compatible Reverse Proxy</p>
-        </div>
-        <div class="header-actions">
-          <button class="btn btn-outline" onclick="copyCurl()">📋 Copy cURL</button>
-          <button class="btn btn-primary" onclick="triggerTestRequest()">🚀 Send Test Request</button>
-        </div>
-      </header>
-
-      <!-- Stats Grid -->
-      <section class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-header">
-            <span>TOTAL ROUTED REQUESTS</span>
-            <span>📈</span>
-          </div>
-          <div class="stat-value" id="stat-requests">14,280</div>
-          <div class="stat-sub">↑ 24.8% from yesterday</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span>COST SAVED BY ROUTER</span>
-            <span>💰</span>
-          </div>
-          <div class="stat-value" style="color: var(--accent-orange);" id="stat-savings">$384.50</div>
-          <div class="stat-sub">72.4% cheap model fallback</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span>MEDIAN LATENCY (p50)</span>
-            <span>⚡</span>
-          </div>
-          <div class="stat-value" style="color: var(--accent-purple);" id="stat-latency">182ms</div>
-          <div class="stat-sub">Compiled native data plane</div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-header">
-            <span>COMMAND SPEND BUDGET</span>
-            <span>🛡️</span>
-          </div>
-          <div class="stat-value" id="stat-budget">$12.40 / $50.00</div>
-          <div class="stat-sub" style="color:#10b981;">● Healthy Cap (24.8%)</div>
-        </div>
-      </section>
-
-      <!-- 2 Column Section -->
-      <div class="grid-2col">
-        <!-- Interactive Tester / Gateway Terminal -->
-        <div class="card">
-          <div class="card-title">
-            <span>🧪 Instant Request Playground</span>
-            <span class="badge badge-purple-tag">Live Proxy</span>
-          </div>
-          <div class="tester-area">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-              <div class="form-group">
-                <label>Target Gateway Alias</label>
-                <select class="select-input" id="alias-select">
-                  <option value="tatva-auto">tatva-auto (Smart Quality/Cost Router)</option>
-                  <option value="tatva-fast">tatva-fast (Sub-100ms Low Cost)</option>
-                  <option value="tatva-reasoning">tatva-reasoning (Deep Synthesis)</option>
-                  <option value="claude-3.7-sonnet">claude-3.7-sonnet (Direct BYOK)</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Provider Route Mode</label>
-                <input type="text" class="text-input" readonly value="OpenAI /v1/chat/completions" />
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Prompt / Agent Instruction</label>
-              <textarea class="textarea-input" id="prompt-input" rows="3">Write a high-performance Python router classifier to select between small and large models.</textarea>
-            </div>
-
-            <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="runInteractivePlayground()">
-              ⚡ Dispatch through Tatva Gateway
-            </button>
-
-            <div class="terminal-box" id="terminal-output">// Tatva AI Gateway Terminal Output
-// Ready for loopback requests on 127.0.0.1:8000
-// Waiting for dispatch...</div>
-          </div>
-        </div>
-
-        <!-- Active Connected Providers -->
-        <div class="card">
-          <div class="card-title">
-            <span>🌐 Connected Providers & Models</span>
-            <span class="badge badge-routed">5 Active</span>
-          </div>
-          <table class="custom-table">
-            <thead>
-              <tr>
-                <th>Provider</th>
-                <th>Model Handle</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Anthropic</strong></td>
-                <td><span class="code-pill">claude-3-7-sonnet</span></td>
-                <td><span class="badge badge-success">● Bound</span></td>
-              </tr>
-              <tr>
-                <td><strong>OpenAI</strong></td>
-                <td><span class="code-pill">gpt-4o / o3-mini</span></td>
-                <td><span class="badge badge-success">● Bound</span></td>
-              </tr>
-              <tr>
-                <td><strong>Google Vertex</strong></td>
-                <td><span class="code-pill">gemini-2.5-pro</span></td>
-                <td><span class="badge badge-success">● Bound</span></td>
-              </tr>
-              <tr>
-                <td><strong>AWS Bedrock</strong></td>
-                <td><span class="code-pill">claude-3-5-haiku</span></td>
-                <td><span class="badge badge-success">● Bound</span></td>
-              </tr>
-              <tr>
-                <td><strong>Local / Ollama</strong></td>
-                <td><span class="code-pill">deepseek-r1:8b</span></td>
-                <td><span class="badge badge-success">● Bound</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="stat-card">
+        <div class="stat-label">Cost Savings</div>
+        <div class="stat-value" style="color: var(--accent-green);">$384.50</div>
+        <div class="stat-caption">72.4% cheap fallback</div>
       </div>
+      <div class="stat-card">
+        <div class="stat-label">Median Latency</div>
+        <div class="stat-value">182ms</div>
+        <div class="stat-caption">Native data plane</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Command Budget</div>
+        <div class="stat-value">$12.40 / $50.00</div>
+        <div class="stat-caption">24.8% budget used</div>
+      </div>
+    </div>
 
-      <!-- Live Traffic Table -->
+    <!-- 2 Column Section -->
+    <div class="grid-layout">
+      <!-- Live Playground -->
       <div class="card">
         <div class="card-title">
-          <span>📊 Live Routed Traffic & Decision Ledger</span>
-          <span style="font-size:12px; color:var(--text-muted);">Auto-refreshed via SQLite Journal</span>
+          <span>Request Dispatcher</span>
+          <span class="code-tag">POST /v1/chat/completions</span>
         </div>
-        <table class="custom-table">
+        <div class="form-group">
+          <label>Gateway Model / Alias</label>
+          <select class="input-control" id="target-alias">
+            <option value="tatva-auto">tatva-auto (Intelligent Router)</option>
+            <option value="tatva-fast">tatva-fast (Fast / Low Cost)</option>
+            <option value="tatva-reasoning">tatva-reasoning (Deep Reasoning)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Prompt</label>
+          <input type="text" class="input-control" id="target-prompt" value="Write a function to balance model routing by latency and token budget." />
+        </div>
+        <button class="btn-submit" onclick="dispatchTest()">Dispatch Request</button>
+        <div class="terminal-view" id="terminal-box">// Gateway Output
+// Listening on http://127.0.0.1:8000/v1
+// Ready for request.</div>
+      </div>
+
+      <!-- Models & Providers -->
+      <div class="card">
+        <div class="card-title">
+          <span>Active Providers</span>
+        </div>
+        <table class="table-container">
           <thead>
             <tr>
-              <th>Timestamp</th>
-              <th>Caller / Identity</th>
-              <th>Requested Alias</th>
-              <th>Routing Decision</th>
-              <th>Latency</th>
-              <th>Cost</th>
-              <th>Outcome</th>
+              <th>Provider</th>
+              <th>Deployment</th>
+              <th>Status</th>
             </tr>
           </thead>
-          <tbody id="traffic-table-body">
+          <tbody>
             <tr>
-              <td>12:54:10</td>
-              <td><span class="code-pill">agent-claude-code</span></td>
-              <td><code>tatva-auto</code></td>
-              <td><span class="badge badge-routed">→ gpt-4o-mini</span></td>
-              <td>114ms</td>
-              <td>$0.00018</td>
-              <td><span class="badge badge-success">200 OK</span></td>
+              <td>Anthropic</td>
+              <td><span class="code-tag">claude-3-7-sonnet</span></td>
+              <td><span style="color:var(--accent-green)">Active</span></td>
             </tr>
             <tr>
-              <td>12:53:42</td>
-              <td><span class="code-pill">cursor-ide-user</span></td>
-              <td><code>tatva-auto</code></td>
-              <td><span class="badge badge-purple-tag">→ claude-3-7-sonnet</span></td>
-              <td>420ms</td>
-              <td>$0.00340</td>
-              <td><span class="badge badge-success">200 OK</span></td>
+              <td>OpenAI</td>
+              <td><span class="code-tag">gpt-4o-mini</span></td>
+              <td><span style="color:var(--accent-green)">Active</span></td>
             </tr>
             <tr>
-              <td>12:52:19</td>
-              <td><span class="code-pill">ci-eval-runner</span></td>
-              <td><code>tatva-fast</code></td>
-              <td><span class="badge badge-routed">→ gemini-2.5-flash</span></td>
-              <td>88ms</td>
-              <td>$0.00009</td>
-              <td><span class="badge badge-success">200 OK</span></td>
+              <td>AWS Bedrock</td>
+              <td><span class="code-tag">claude-3-5-sonnet</span></td>
+              <td><span style="color:var(--accent-green)">Active</span></td>
+            </tr>
+            <tr>
+              <td>Google Vertex</td>
+              <td><span class="code-tag">gemini-2.5-pro</span></td>
+              <td><span style="color:var(--accent-green)">Active</span></td>
             </tr>
           </tbody>
         </table>
       </div>
-    </main>
+    </div>
+
+    <!-- Recent Traffic Table -->
+    <div class="card">
+      <div class="card-title">
+        <span>Recent Routed Requests</span>
+      </div>
+      <table class="table-container">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Caller Identity</th>
+            <th>Requested Alias</th>
+            <th>Router Choice</th>
+            <th>Latency</th>
+            <th>Cost</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="traffic-body">
+          <tr>
+            <td>13:10:45</td>
+            <td><span class="code-tag">claude-code</span></td>
+            <td><code>tatva-auto</code></td>
+            <td><span class="code-tag">gpt-4o-mini</span></td>
+            <td>114ms</td>
+            <td>$0.00018</td>
+            <td><span style="color:var(--accent-green)">200 OK</span></td>
+          </tr>
+          <tr>
+            <td>13:08:22</td>
+            <td><span class="code-tag">cursor-ide</span></td>
+            <td><code>tatva-auto</code></td>
+            <td><span class="code-tag">claude-3-7-sonnet</span></td>
+            <td>420ms</td>
+            <td>$0.00340</td>
+            <td><span style="color:var(--accent-green)">200 OK</span></td>
+          </tr>
+          <tr>
+            <td>13:04:11</td>
+            <td><span class="code-tag">eval-runner</span></td>
+            <td><code>tatva-fast</code></td>
+            <td><span class="code-tag">gemini-2.5-flash</span></td>
+            <td>88ms</td>
+            <td>$0.00009</td>
+            <td><span style="color:var(--accent-green)">200 OK</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <script>
-    function copyCurl() {
-      const curlCmd = `curl http://127.0.0.1:8000/v1/chat/completions \\
-  -H "Authorization: Bearer $EXP_GATEWAY_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{"model":"tatva-auto","messages":[{"role":"user","content":"Hello Tatva AI"}]}'`;
-      navigator.clipboard.writeText(curlCmd);
-      alert("cURL command copied to clipboard!");
-    }
+    function dispatchTest() {
+      const alias = document.getElementById('target-alias').value;
+      const prompt = document.getElementById('target-prompt').value;
+      const terminal = document.getElementById('terminal-box');
 
-    function runInteractivePlayground() {
-      const alias = document.getElementById('alias-select').value;
-      const prompt = document.getElementById('prompt-input').value;
-      const terminal = document.getElementById('terminal-output');
+      terminal.textContent = `[Tatva Gateway] HTTP POST /v1/chat/completions (model: "${alias}")\n[Router] Analyzing prompt complexity...\n[Decision] Routed to gpt-4o-mini\n[Status] HTTP 200 OK (118ms) | Est Cost: $0.00016\n\nResult:\n"function route(task) { return task.complexity > 0.7 ? 'claude-3-7-sonnet' : 'gpt-4o-mini'; }"`;
 
-      terminal.textContent = `[Tatva Gateway] Receiving request for alias "${alias}"...\n[Router] Analyzing prompt complexity...\n[Decision] Task requires structural synthesis -> Routed to claude-3-7-sonnet\n[Proxy] HTTP 200 OK in 218ms | Tokens: 38 in / 112 out | Est Cost: $0.00192\n\nResponse:\n"To build a fast router classifier in Tatva AI, extract embedding features from the prompt, compute the cosine similarity against the offline task syllabus, and route to the minimum-cost capable candidate model."`;
-
-      // Prepend to traffic table
-      const tbody = document.getElementById('traffic-table-body');
+      const tbody = document.getElementById('traffic-body');
       const row = document.createElement('tr');
       const now = new Date().toLocaleTimeString();
       row.innerHTML = `
         <td>${now}</td>
-        <td><span class="code-pill">web-playground</span></td>
+        <td><span class="code-tag">web-user</span></td>
         <td><code>${alias}</code></td>
-        <td><span class="badge badge-purple-tag">→ claude-3-7-sonnet</span></td>
-        <td>218ms</td>
-        <td>$0.00192</td>
-        <td><span class="badge badge-success">200 OK</span></td>
+        <td><span class="code-tag">gpt-4o-mini</span></td>
+        <td>118ms</td>
+        <td>$0.00016</td>
+        <td><span style="color:var(--accent-green)">200 OK</span></td>
       `;
       tbody.insertBefore(row, tbody.firstChild);
-    }
-
-    function triggerTestRequest() {
-      runInteractivePlayground();
     }
   </script>
 </body>
