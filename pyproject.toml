@@ -49,6 +49,8 @@ dev = [
 
 [project.scripts]
 exp = "exp.cli:main"
+tatva = "exp.cli:main"
+
 
 [build-system]
 requires = ["hatchling"]

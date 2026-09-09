@@ -159,10 +159,11 @@ def _requires_direct_start(
 
 
 def _render_home(console: Console) -> None:
-    """Render the branded first screen for an interactive ``exp`` invocation."""
-    console.print(Text("exp", style="bold green"))
-    console.print(Text("Experiential gateway", style="dim"))
+    """Render the branded first screen for an interactive invocation."""
+    console.print(Text("🪷 TATVA AI (exp)", style="bold green"))
+    console.print(Text("Experiential gateway · Intelligent Model Router", style="dim"))
     console.print()
+
 
 
 def _start_from_menu(
