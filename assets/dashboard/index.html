@@ -3,29 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tatva AI · Model Gateway & Agent Router</title>
+  <title>Tatva AI · Every AI model. One key. Zero markup.</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #ffffff;
-      --bg-subtle: #fafafa;
-      --bg-card: #ffffff;
-      --border: #ececec;
-      --border-strong: #e0e0e0;
-      
+      --bg-alt: #0a0a0a;
+      --card-dark: #111111;
+      --border-dark: #222222;
+      --hairline: #e5e5e5;
+      --hairline-subtle: #f0f0f0;
       --ink: #0a0a0a;
-      --ink-muted: #666666;
+      --ink-muted: #555555;
       --ink-dim: #888888;
       
-      --accent-blue: #0070f3;
-      --accent-purple: #7928ca;
-      --accent-amber: #f5a623;
-      --accent-red: #ee0000;
-      --accent-teal: #50e3c2;
-      --accent-green: #00875a;
-
+      --green-highlight: #178248;
+      --green-btn: #178248;
+      --green-btn-hover: #126839;
+      --green-subtle: #eef8f2;
+      
       --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --font-mono: 'Geist Mono', "SFMono-Regular", Consolas, Menlo, monospace;
     }
@@ -40,53 +38,58 @@
       background-color: var(--bg);
       color: var(--ink);
       font-family: var(--font-sans);
-      min-height: 100vh;
       line-height: 1.5;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Top Nav */
+    /* Navbar */
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 40px;
-      border-bottom: 1px solid var(--border);
+      padding: 14px 48px;
+      border-bottom: 1px solid var(--hairline);
       background: #ffffff;
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 100;
     }
 
-    .brand-section {
+    .nav-left {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 32px;
+    }
+
+    .brand-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       text-decoration: none;
       color: var(--ink);
     }
 
-    .brand-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
+    .brand-img {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
       object-fit: cover;
-      border: 1px solid var(--border);
     }
 
-    .brand-title {
-      font-size: 16px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
+    .brand-name {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
     }
 
-    .nav-links {
+    .nav-menu {
       display: flex;
       gap: 24px;
       list-style: none;
     }
 
-    .nav-links a {
+    .nav-menu a {
       color: var(--ink-muted);
       text-decoration: none;
       font-size: 14px;
@@ -94,391 +97,766 @@
       transition: color 0.15s;
     }
 
-    .nav-links a:hover, .nav-links a.active {
+    .nav-menu a:hover {
       color: var(--ink);
-      font-weight: 500;
     }
 
-    .status-badge {
+    .nav-right {
       display: flex;
       align-items: center;
+      gap: 16px;
+    }
+
+    .github-btn {
+      display: inline-flex;
+      align-items: center;
       gap: 6px;
-      padding: 4px 10px;
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      font-size: 12px;
-      font-family: var(--font-mono);
+      border: 1px solid var(--hairline);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+      text-decoration: none;
+      background: #ffffff;
+    }
+
+    .github-btn:hover {
+      background: #fafafa;
+    }
+
+    .github-star-count {
       color: var(--ink-muted);
+      display: flex;
+      align-items: center;
+      gap: 3px;
     }
 
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--accent-green);
-      border-radius: 50%;
+    .nav-signin {
+      color: var(--ink-muted);
+      text-decoration: none;
+      font-size: 14px;
+      margin-left: 6px;
     }
 
-    /* Main Container */
-    .container {
-      max-width: 1200px;
+    .nav-signin:hover {
+      color: var(--ink);
+    }
+
+    .btn-green {
+      background: var(--green-btn);
+      color: #ffffff;
+      padding: 7px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-green:hover {
+      background: var(--green-btn-hover);
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      color: var(--ink);
+      border: 1px solid #d1d5db;
+      padding: 9px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .btn-outline:hover {
+      background: #fafafa;
+      border-color: #9ca3af;
+    }
+
+    /* Container */
+    .section-wrap {
+      border-bottom: 1px solid var(--hairline);
+      padding: 64px 48px;
+    }
+
+    .grid-container {
+      max-width: 1240px;
       margin: 0 auto;
-      padding: 40px 24px;
     }
 
-    /* Header */
-    .page-header {
-      margin-bottom: 36px;
+    /* Green highlight badge */
+    .highlight-pill {
+      background: var(--green-highlight);
+      color: #ffffff;
+      padding: 2px 10px;
+      border-radius: 2px;
+      display: inline-block;
     }
 
-    .page-header h1 {
-      font-size: 28px;
+    /* Hero Section */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .yc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-mono);
+      font-size: 11px;
       font-weight: 600;
-      letter-spacing: -0.03em;
-      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #555555;
+      margin-bottom: 24px;
     }
 
-    .page-header p {
-      color: var(--ink-muted);
+    .yc-box {
+      background: #737373;
+      color: #fff;
+      font-weight: 700;
+      padding: 1px 5px;
+      border-radius: 2px;
+      font-size: 10px;
+    }
+
+    .hero-title {
+      font-size: 52px;
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.035em;
+      margin-bottom: 22px;
+    }
+
+    .hero-subtitle {
+      color: #4b5563;
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 520px;
+      margin-bottom: 24px;
+    }
+
+    .api-endpoint-pill {
+      display: inline-flex;
+      align-items: center;
+      background: #f4f6f5;
+      border: 1px solid #e2e8e5;
+      padding: 8px 14px;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: #374151;
+      margin-bottom: 28px;
+    }
+
+    .api-endpoint-pill span.method {
+      color: var(--green-highlight);
+      font-weight: 600;
+      margin-right: 8px;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .hero-cta-group .btn-green {
+      padding: 10px 22px;
+      font-size: 14px;
+    }
+
+    /* Hero Diagram (Right) */
+    .diagram-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .diagram-mesh {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+      position: relative;
+      width: 100%;
+    }
+
+    .one-key-box {
+      width: 120px;
+      height: 120px;
+      border: 1.5px solid var(--green-highlight);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #ffffff;
+      z-index: 2;
+    }
+
+    .one-key-box img {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+    }
+
+    .one-key-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      color: #374151;
+      letter-spacing: 0.05em;
+    }
+
+    .diagram-lines {
+      position: absolute;
+      left: 175px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 60px;
+      height: 180px;
+      pointer-events: none;
+    }
+
+    .provider-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      z-index: 2;
+    }
+
+    .provider-cell {
+      width: 52px;
+      height: 52px;
+      border: 1px solid var(--hairline);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      font-size: 20px;
+      transition: all 0.2s;
+    }
+
+    .provider-cell.active-green {
+      border: 1.5px solid var(--green-highlight);
+    }
+
+    .provider-cell:hover {
+      border-color: #999;
+      transform: scale(1.04);
+    }
+
+    .diagram-caption {
+      margin-top: 32px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .diagram-caption .post-tag {
+      color: var(--green-highlight);
+      font-weight: 600;
+    }
+
+    /* Price section */
+    .price-headline-grid {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 48px;
+      align-items: center;
+      padding: 40px 0;
+    }
+
+    .big-percent {
+      font-size: 100px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -0.05em;
+    }
+
+    .price-text h2 {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .price-text p {
+      color: #6b7280;
       font-size: 15px;
     }
 
-    /* Stats Row */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 32px;
+    .price-text a {
+      color: var(--green-highlight);
+      text-decoration: underline;
     }
 
-    .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 20px;
+    /* Dark Case Studies Section */
+    .case-studies-section {
+      background: var(--bg-alt);
+      color: #ffffff;
+      padding: 72px 48px;
     }
 
-    .stat-label {
-      font-size: 13px;
-      color: var(--ink-muted);
+    .case-studies-section h2 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
       margin-bottom: 8px;
+    }
+
+    .case-studies-section .section-sub {
+      color: #9ca3af;
+      font-size: 15px;
+      max-width: 680px;
+      margin-bottom: 48px;
+    }
+
+    .case-cards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .case-card {
+      background: var(--card-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      padding: 36px 32px;
+    }
+
+    .case-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #6b7280;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .case-metric {
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .case-metric span.metric-label {
+      font-size: 16px;
+      font-weight: 400;
+      color: #d1d5db;
+      margin-left: 6px;
+      letter-spacing: normal;
+    }
+
+    .case-desc {
+      color: #9ca3af;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .case-link {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13px;
       font-weight: 500;
     }
 
-    .stat-value {
-      font-size: 24px;
+    .case-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Intelligence 3-Col Section */
+    .intel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 48px;
+    }
+
+    .intel-header h2 {
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      margin-bottom: 8px;
+    }
+
+    .intel-header p {
+      color: #6b7280;
+      font-size: 15px;
+    }
+
+    .intel-link {
+      color: #4b5563;
+      font-size: 14px;
+      text-decoration: none;
+      border-bottom: 1px solid #d1d5db;
+      padding-bottom: 2px;
+    }
+
+    .intel-link:hover {
+      color: #000;
+    }
+
+    .intel-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .intel-col {
+      padding: 36px 28px;
+      border-right: 1px solid var(--hairline);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .intel-col:last-child {
+      border-right: none;
+    }
+
+    .intel-num {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #9ca3af;
+      margin-bottom: 32px;
+    }
+
+    .intel-diagram {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .intel-title {
+      font-size: 18px;
       font-weight: 600;
+      margin-bottom: 12px;
       letter-spacing: -0.02em;
     }
 
-    .stat-caption {
-      font-size: 12px;
-      color: var(--ink-dim);
-      margin-top: 4px;
+    .intel-body {
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.6;
     }
 
-    /* Grid Sections */
-    .grid-layout {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 24px;
-      margin-bottom: 32px;
-    }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 24px;
-    }
-
-    .card-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 16px;
+    /* Floating bottom-right toggle */
+    .bottom-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-    }
-
-    /* Table */
-    .table-container {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
-
-    .table-container th {
-      text-align: left;
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
-      color: var(--ink-muted);
-      font-weight: 500;
-      font-size: 12px;
-    }
-
-    .table-container td {
-      padding: 12px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .code-tag {
-      font-family: var(--font-mono);
-      font-size: 12px;
-      background: var(--bg-subtle);
-      padding: 2px 6px;
-      border-radius: 4px;
-      border: 1px solid var(--border);
-    }
-
-    /* Playground / Tester */
-    .form-group {
-      margin-bottom: 14px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      margin-bottom: 6px;
-      color: var(--ink);
-    }
-
-    .input-control {
-      width: 100%;
-      padding: 9px 12px;
-      font-size: 13px;
-      border: 1px solid var(--border-strong);
+      background: #ffffff;
+      border: 1px solid var(--hairline);
       border-radius: 6px;
-      outline: none;
-      font-family: inherit;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+      padding: 3px;
+      z-index: 1000;
     }
 
-    .input-control:focus {
-      border-color: var(--ink);
-    }
-
-    .btn-submit {
-      background: var(--ink);
-      color: #ffffff;
-      padding: 9px 16px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 500;
+    .theme-toggle-btn {
+      padding: 6px 10px;
+      background: transparent;
       border: none;
       cursor: pointer;
-      width: 100%;
-      margin-top: 4px;
+      color: #555;
+      font-size: 14px;
+      border-right: 1px solid var(--hairline);
     }
 
-    .btn-submit:hover {
-      background: #262626;
-    }
-
-    .terminal-view {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 12px;
-      font-family: var(--font-mono);
+    .mode-pill {
+      padding: 5px 12px;
       font-size: 12px;
-      color: var(--ink);
-      margin-top: 14px;
-      white-space: pre-wrap;
-      min-height: 100px;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 4px;
+      color: #666;
+    }
+
+    .mode-pill.active {
+      background: #000000;
+      color: #ffffff;
     }
   </style>
 </head>
 <body>
-  <!-- Navigation -->
+
+  <!-- Top Navbar -->
   <nav class="navbar">
-    <a href="#" class="brand-section">
-      <img src="../tatva-icon.jpg" alt="Tatva AI Logo" class="brand-logo" onerror="this.style.display='none'" />
-      <span class="brand-title">Tatva AI</span>
-    </a>
+    <div class="nav-left">
+      <a href="#" class="brand-logo-wrap">
+        <img src="../tatva-icon.jpg" alt="Tatva AI Logo" class="brand-img" />
+        <span class="brand-name">Tatva AI</span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="#">Models</a></li>
+        <li><a href="#">Intelligence</a></li>
+        <li><a href="#">Docs</a></li>
+        <li><a href="#">Pricing</a></li>
+        <li><a href="#">Blog</a></li>
+      </ul>
+    </div>
 
-    <ul class="nav-links">
-      <li><a href="#" class="active">Overview</a></li>
-      <li><a href="#">Router</a></li>
-      <li><a href="#">Models</a></li>
-      <li><a href="#">Spend</a></li>
-      <li><a href="#">Settings</a></li>
-    </ul>
-
-    <div class="status-badge">
-      <div class="status-dot"></div>
-      <span>127.0.0.1:8000</span>
+    <div class="nav-right">
+      <a href="https://github.com/Anandkumaryadav15/tatva-ai" target="_blank" class="github-btn">
+        <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
+        </svg>
+        <span class="github-star-count">3.3k ★</span>
+      </a>
+      <a href="#" class="nav-signin">Sign in</a>
+      <button class="btn-green" onclick="alert('API Key: exp_vk_2a3563edf66a_e0T1BRD3cwGd6VRawHdLEtKjF2RqKcJloV-yqPRR2I8')">Get API key</button>
     </div>
   </nav>
 
-  <!-- Main Container -->
-  <div class="container">
-    <header class="page-header">
-      <h1>Gateway & Router Control Plane</h1>
-      <p>Local OpenAI-compatible API gateway and intelligent model router.</p>
-    </header>
+  <!-- Hero Section -->
+  <section class="section-wrap">
+    <div class="grid-container">
+      <div class="hero-grid">
+        <!-- Left Hero Copy -->
+        <div>
+          <div class="yc-badge">
+            <span class="yc-box">Y</span> BACKED BY Y COMBINATOR
+          </div>
+          <h1 class="hero-title">
+            Every AI model. One key.<br />
+            <span class="highlight-pill">Zero markup.</span>
+          </h1>
+          <p class="hero-subtitle">
+            The open source AI gateway. Hosted providers, your own keys, and your own GPUs behind one endpoint, at the provider's price.
+          </p>
 
-    <!-- Stats -->
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-label">Total Requests</div>
-        <div class="stat-value">14,280</div>
-        <div class="stat-caption">+24.8% past 24h</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Cost Savings</div>
-        <div class="stat-value" style="color: var(--accent-green);">$384.50</div>
-        <div class="stat-caption">72.4% cheap fallback</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Median Latency</div>
-        <div class="stat-value">182ms</div>
-        <div class="stat-caption">Native data plane</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">Command Budget</div>
-        <div class="stat-value">$12.40 / $50.00</div>
-        <div class="stat-caption">24.8% budget used</div>
+          <div class="api-endpoint-pill">
+            <span class="method">POST</span> api.tatva.ai/v1
+          </div>
+
+          <div class="hero-cta-group">
+            <button class="btn-green" onclick="alert('API Key copied!')">Get API key</button>
+            <button class="btn-outline" onclick="window.open('https://github.com/Anandkumaryadav15/tatva-ai')">Book a call</button>
+          </div>
+        </div>
+
+        <!-- Right Hero Diagram -->
+        <div class="diagram-container">
+          <div class="diagram-mesh">
+            <!-- Center One Key box -->
+            <div class="one-key-box">
+              <img src="../tatva-icon.jpg" alt="Logo" />
+              <span class="one-key-label">ONE KEY</span>
+            </div>
+
+            <!-- SVG connection lines -->
+            <svg class="diagram-lines" viewBox="0 0 60 180">
+              <path d="M 0 90 L 30 90 L 30 26 L 60 26" fill="none" stroke="#178248" stroke-width="1.5" />
+              <path d="M 30 90 L 60 90" fill="none" stroke="#178248" stroke-width="1.5" />
+              <path d="M 30 90 L 30 154 L 60 154" fill="none" stroke="#178248" stroke-width="1.5" />
+            </svg>
+
+            <!-- 3x3 Provider Grid -->
+            <div class="provider-grid">
+              <div class="provider-cell">🤖</div>
+              <div class="provider-cell">🅰️</div>
+              <div class="provider-cell">✨</div>
+              <div class="provider-cell">♾️</div>
+              <div class="provider-cell">⚙️</div>
+              <div class="provider-cell">🌀</div>
+              <div class="provider-cell">Ⓜ️</div>
+              <div class="provider-cell">🌐</div>
+              <div class="provider-cell active-green">🎯</div>
+            </div>
+          </div>
+
+          <div class="diagram-caption">
+            <span class="post-tag">POST</span> model=qwen3.8-27b-ft → your gpus · local 96%
+          </div>
+        </div>
       </div>
     </div>
+  </section>
 
-    <!-- 2 Column Section -->
-    <div class="grid-layout">
-      <!-- Live Playground -->
-      <div class="card">
-        <div class="card-title">
-          <span>Request Dispatcher</span>
-          <span class="code-tag">POST /v1/chat/completions</span>
+  <!-- 0% Markup Section -->
+  <section class="section-wrap" style="padding: 48px 48px;">
+    <div class="grid-container">
+      <div class="price-headline-grid">
+        <div class="big-percent">0%</div>
+        <div class="price-text">
+          <h2>Pay <span class="highlight-pill">the provider's price.</span></h2>
+          <p>The gateway is free and open source. We earn on hosted inference and on Pro. <a href="#">See pricing</a></p>
         </div>
-        <div class="form-group">
-          <label>Gateway Model / Alias</label>
-          <select class="input-control" id="target-alias">
-            <option value="tatva-auto">tatva-auto (Intelligent Router)</option>
-            <option value="tatva-fast">tatva-fast (Fast / Low Cost)</option>
-            <option value="tatva-reasoning">tatva-reasoning (Deep Reasoning)</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Prompt</label>
-          <input type="text" class="input-control" id="target-prompt" value="Write a function to balance model routing by latency and token budget." />
-        </div>
-        <button class="btn-submit" onclick="dispatchTest()">Dispatch Request</button>
-        <div class="terminal-view" id="terminal-box">// Gateway Output
-// Listening on http://127.0.0.1:8000/v1
-// Ready for request.</div>
-      </div>
-
-      <!-- Models & Providers -->
-      <div class="card">
-        <div class="card-title">
-          <span>Active Providers</span>
-        </div>
-        <table class="table-container">
-          <thead>
-            <tr>
-              <th>Provider</th>
-              <th>Deployment</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Anthropic</td>
-              <td><span class="code-tag">claude-3-7-sonnet</span></td>
-              <td><span style="color:var(--accent-green)">Active</span></td>
-            </tr>
-            <tr>
-              <td>OpenAI</td>
-              <td><span class="code-tag">gpt-4o-mini</span></td>
-              <td><span style="color:var(--accent-green)">Active</span></td>
-            </tr>
-            <tr>
-              <td>AWS Bedrock</td>
-              <td><span class="code-tag">claude-3-5-sonnet</span></td>
-              <td><span style="color:var(--accent-green)">Active</span></td>
-            </tr>
-            <tr>
-              <td>Google Vertex</td>
-              <td><span class="code-tag">gemini-2.5-pro</span></td>
-              <td><span style="color:var(--accent-green)">Active</span></td>
-            </tr>
-          </tbody>
-        </table>
       </div>
     </div>
+  </section>
 
-    <!-- Recent Traffic Table -->
-    <div class="card">
-      <div class="card-title">
-        <span>Recent Routed Requests</span>
+  <!-- Case Studies (Dark Section) -->
+  <section class="case-studies-section">
+    <div class="grid-container">
+      <h2>Case studies</h2>
+      <p class="section-sub">
+        A model you own, trained on your workflow, doing the job you rent a frontier model for at a tenth of the price and several times the speed.
+      </p>
+
+      <div class="case-cards-grid">
+        <!-- Card 1 -->
+        <div class="case-card">
+          <div class="case-tag">COMPUTER USE AGENT · JULY 2026</div>
+          <div class="case-metric">
+            -97% <span class="metric-label">cost, same tasks</span>
+          </div>
+          <p class="case-desc">
+            A 9B model distilled from a teacher working 1,000 tasks on Mac VMs, then scored in closed-loop simulation: 50% more tasks completed than the untrained 9B, 7× faster than Opus 4.8.
+          </p>
+          <a href="#" class="case-link">Read the story →</a>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="case-card">
+          <div class="case-tag">CLAIMS RESEARCH · AUGUST 2026</div>
+          <div class="case-metric">
+            +10.9% <span class="metric-label">verdict accuracy</span>
+          </div>
+          <p class="case-desc">
+            A 4B model trained with GRPO on the public AVeriTeC benchmark and run on 500 held-out claims with the same tools and turn limit as Haiku 4.5: 9.4× faster, at 90% lower cost.
+          </p>
+          <a href="#" class="case-link">Read the story →</a>
+        </div>
       </div>
-      <table class="table-container">
-        <thead>
-          <tr>
-            <th>Timestamp</th>
-            <th>Caller Identity</th>
-            <th>Requested Alias</th>
-            <th>Router Choice</th>
-            <th>Latency</th>
-            <th>Cost</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="traffic-body">
-          <tr>
-            <td>13:10:45</td>
-            <td><span class="code-tag">claude-code</span></td>
-            <td><code>tatva-auto</code></td>
-            <td><span class="code-tag">gpt-4o-mini</span></td>
-            <td>114ms</td>
-            <td>$0.00018</td>
-            <td><span style="color:var(--accent-green)">200 OK</span></td>
-          </tr>
-          <tr>
-            <td>13:08:22</td>
-            <td><span class="code-tag">cursor-ide</span></td>
-            <td><code>tatva-auto</code></td>
-            <td><span class="code-tag">claude-3-7-sonnet</span></td>
-            <td>420ms</td>
-            <td>$0.00340</td>
-            <td><span style="color:var(--accent-green)">200 OK</span></td>
-          </tr>
-          <tr>
-            <td>13:04:11</td>
-            <td><span class="code-tag">eval-runner</span></td>
-            <td><code>tatva-fast</code></td>
-            <td><span class="code-tag">gemini-2.5-flash</span></td>
-            <td>88ms</td>
-            <td>$0.00009</td>
-            <td><span style="color:var(--accent-green)">200 OK</span></td>
-          </tr>
-        </tbody>
-      </table>
     </div>
+  </section>
+
+  <!-- Console Section -->
+  <section class="section-wrap">
+    <div class="grid-container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+        <div>
+          <h2 style="font-size: 38px; font-weight: 700; letter-spacing: -0.035em; margin-bottom: 8px;">
+            Every request and every dollar,<br />
+            <span class="highlight-pill">in one console.</span>
+          </h2>
+          <p style="color: #6b7280; font-size: 15px;">Catalog, usage, and limits for the whole org, by agent, person, model, or day.</p>
+        </div>
+        <div>
+          <a href="#" class="intel-link">Open the console →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Intelligence Layer 3-Column Section -->
+  <section class="section-wrap" style="border-bottom: none;">
+    <div class="grid-container">
+      <div class="intel-header">
+        <div>
+          <h2>Make your AI <span class="highlight-pill">better, faster, cheaper.</span></h2>
+          <p>The gateway routes. The intelligence layer improves what flows through it.</p>
+        </div>
+        <div>
+          <a href="#" class="intel-link">How the intelligence layer works →</a>
+        </div>
+      </div>
+
+      <!-- 3 Columns -->
+      <div class="intel-grid">
+        <!-- Col 1 -->
+        <div class="intel-col">
+          <div class="intel-num">01</div>
+          <div class="intel-diagram">
+            <svg width="180" height="100" viewBox="0 0 180 100">
+              <circle cx="20" cy="50" r="3" fill="#666" />
+              <circle cx="30" cy="20" r="3" fill="#666" />
+              <circle cx="30" cy="80" r="3" fill="#666" />
+              <line x1="20" y1="50" x2="60" y2="50" stroke="#ccc" stroke-width="1" />
+              <line x1="30" y1="20" x2="60" y2="50" stroke="#ccc" stroke-width="1" />
+              <line x1="30" y1="80" x2="60" y2="50" stroke="#ccc" stroke-width="1" />
+              <rect x="60" y="36" width="54" height="28" fill="#fff" stroke="#ccc" rx="2" />
+              <text x="87" y="54" font-size="10" font-family="monospace" text-anchor="middle" fill="#333">gateway</text>
+              <line x1="114" y1="50" x2="134" y2="50" stroke="#178248" stroke-width="1.5" />
+              <rect x="134" y="34" width="44" height="32" fill="#178248" rx="2" />
+              <text x="156" y="54" font-size="9" font-family="monospace" text-anchor="middle" fill="#fff">gpt-5</text>
+            </svg>
+          </div>
+          <h3 class="intel-title">The right model</h3>
+          <p class="intel-body">
+            We watch your traffic and tell you when a switch wins, including new models the day they ship. Turnkey per-prompt optimization, if you want it.
+          </p>
+        </div>
+
+        <!-- Col 2 -->
+        <div class="intel-col">
+          <div class="intel-num">02</div>
+          <div class="intel-diagram">
+            <div style="width: 100%; padding: 0 10px;">
+              <div style="font-family: monospace; font-size: 11px; color: #666; margin-bottom: 4px;">first call</div>
+              <div style="height: 18px; background: #d1d5db; width: 100%; border-radius: 2px; margin-bottom: 16px;"></div>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="height: 18px; background: #178248; width: 18%; border-radius: 2px;"></div>
+                <div style="font-family: monospace; font-size: 11px; color: #178248; font-weight: 600;">90% off</div>
+              </div>
+              <div style="font-family: monospace; font-size: 11px; color: #666; margin-top: 4px;">repeated call</div>
+            </div>
+          </div>
+          <h3 class="intel-title">Caching</h3>
+          <p class="intel-body">
+            We catch opportunities to improve cache hit rate, and show what they would save. Repeated tokens come back at 90% off when you turn it on.
+          </p>
+        </div>
+
+        <!-- Col 3 -->
+        <div class="intel-col">
+          <div class="intel-num">03</div>
+          <div class="intel-diagram">
+            <svg width="190" height="100" viewBox="0 0 190 100">
+              <text x="95" y="24" font-size="9" font-family="monospace" text-anchor="middle" fill="#555">proved in simulation</text>
+              <line x1="20" y1="50" x2="40" y2="50" stroke="#999" stroke-width="1" stroke-dasharray="2 2" />
+              <rect x="40" y="38" width="48" height="24" fill="#fff" stroke="#ccc" rx="2" />
+              <text x="64" y="53" font-size="9" font-family="monospace" text-anchor="middle" fill="#333">fine-tune</text>
+              <circle cx="104" cy="50" r="8" fill="#fff" stroke="#999" />
+              <text x="104" y="53" font-size="10" text-anchor="middle" fill="#178248">✓</text>
+              <rect x="122" y="34" width="58" height="32" fill="#178248" rx="2" />
+              <text x="151" y="53" font-size="9" font-family="monospace" text-anchor="middle" fill="#fff">your model</text>
+              <text x="40" y="80" font-size="9" font-family="monospace" fill="#666">your traffic</text>
+              <text x="130" y="80" font-size="9" font-family="monospace" fill="#666">same endpoint</text>
+            </svg>
+          </div>
+          <h3 class="intel-title">A model you own</h3>
+          <p class="intel-body">
+            Fine-tuned on your traffic, proved before it serves, and reached through the same endpoint. You turn it on; it never happens on its own.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating bottom-right toggle -->
+  <div class="bottom-toggle">
+    <button class="theme-toggle-btn" title="Toggle theme">☀️</button>
+    <div class="mode-pill active">Human</div>
+    <div class="mode-pill">Agent</div>
   </div>
 
-  <script>
-    function dispatchTest() {
-      const alias = document.getElementById('target-alias').value;
-      const prompt = document.getElementById('target-prompt').value;
-      const terminal = document.getElementById('terminal-box');
-
-      terminal.textContent = `[Tatva Gateway] HTTP POST /v1/chat/completions (model: "${alias}")\n[Router] Analyzing prompt complexity...\n[Decision] Routed to gpt-4o-mini\n[Status] HTTP 200 OK (118ms) | Est Cost: $0.00016\n\nResult:\n"function route(task) { return task.complexity > 0.7 ? 'claude-3-7-sonnet' : 'gpt-4o-mini'; }"`;
-
-      const tbody = document.getElementById('traffic-body');
-      const row = document.createElement('tr');
-      const now = new Date().toLocaleTimeString();
-      row.innerHTML = `
-        <td>${now}</td>
-        <td><span class="code-tag">web-user</span></td>
-        <td><code>${alias}</code></td>
-        <td><span class="code-tag">gpt-4o-mini</span></td>
-        <td>118ms</td>
-        <td>$0.00016</td>
-        <td><span style="color:var(--accent-green)">200 OK</span></td>
-      `;
-      tbody.insertBefore(row, tbody.firstChild);
-    }
-  </script>
 </body>
 </html>
